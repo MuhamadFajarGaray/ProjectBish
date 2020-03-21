@@ -122,6 +122,7 @@ async def pipcheck(pip):
 @register(outgoing=True, pattern="^.alive$")
 async def amireallyalive(alive):
     """ For .on command, check if the bot is running.  """
+<<<<<<< HEAD
     await alive.edit("`"
                      "I'm alive, at your services....\n"
                      f"------------------------------------\n"
@@ -130,6 +131,46 @@ async def amireallyalive(alive):
                      f"•  Telethon version : {version.__version__}\n"
                      f"------------------------------------\n"
                      "`")
+=======
+    await alive.edit(
+                      "`I'M ALIVE MASTER!! \n\n"
+                     f"Hosted on:` [HEROKU](https://www.heroku.com) \n"
+                     f"`===============================\n"
+                     f"Telethon: v{version.__version__} \n"
+                     f"Python: v{python_version()} \n"
+                     f"===============================\n"
+                     f"User: {DEFAULTUSER} \n"
+                     f"Groups:` [USERBOT INDONESIA](https://t.me/userbotindo)\n"
+                     f"`===============================`\n"
+                     f"  ⠀⡷⣾⣎⣷⡗⣿⣾⠑⣇⣿⣾⣉⢾⡑⣿⠒⣾⣉⣿⡱⠀\n" 
+                     f"⠀  ⠃⠛⠃⠛⠃⠛⠙⠊⠃⠛⠛⠒⠑⠋⠙⠊⠛⠒⠛⠑⠀\n"
+                     f"⣿⣿⣿⣿⣿⣿⣿⣿⠿⠻⠿⡿⠿⠻⠿⡿⠿⠻⠿⣿⣿⣿⣿⣿\n"
+                     f"⣿⣿⣿⣿⣿⡿⠋⣼⠀⠀⠀⡇⠀⠀⠀⡇⠀⠀⠀⣿⣿⣿⣿⣿\n"
+                     f"⣿⣿⣿⣿⡉⠒⠤⠿⠶⠀⠶⠷⠶⠀⠶⠷⠶⠀⠶⢿⣿⣿⣿⣿\n"
+                     f"⣿⣿⣿⣿⣿⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣼⣿⣿⣿⣿\n"
+                     f"⣿⠛⠛⠛⠛⠛⠛⠛⠛⠛⡛⠛⠛⢛⠛⠛⠛⠛⠛⠛⠛⠛⠛⣿\n"
+                     f"⣿⠀⠀⠀⠀⠀⣠⠀⢤⣼⣿⣤⣤⣿⣧⡤⣠⡀⣠⡀⣠⡀⠀⣿\n"
+                     f"⣿⠀⣀⠀⣼⣿⣿⡆⠀⢻⣏⣻⣟⣹⡟⠀⣿⡏⣿⡏⣿⡏⠀⣿\n"
+                     f"⣿⠀⠙⣿⡿⠿⢿⣿⣄⡀⣿⣿⣿⣿⠀⠀⣿⣧⣿⣧⣿⡇⠀⣿\n"
+                     f"⣿⠀⠀⠋⠀⢴⣿⣿⡟⣴⣿⣷⣾⣿⣷⠄⠉⠉⣿⡏⠉⠁⠀⣿\n"
+                     f"⣿⠀⠀⠀⠀⠀⣿⣿⠀⢿⣿⣿⣿⣿⣥⣴⣾⣿⣿⣷⠀⠀⠀⣿\n"
+                     f"⣿⠀⠀⠀⠀⠀⣿⣿⠀⣠⣿⣿⣿⣿⣿⣷⣤⣀⣿⣿⠀⠀⠀⣿\n"
+                     f"⣿⠀⠀⠀⠀⠀⣿⣿⣷⣿⣿⣿⣿⣿⠋⠙⠻⢿⣿⡟⠀⠀⠀⣿\n"
+                     f"⣿⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣾⡗⠀⠀⣿⡇⠀⠀⠀⣿\n"
+                     f"⣿⠀⠀⠀⠀⠀⠙⠻⠿⣿⣿⣿⢻⣿⣿⣷⣶⡄⣿⡇⠀⠀⠀⣿\n"
+                     f"⠙⢷⣄⠀⠀⠀⠀⠀⠀⣿⣿⣿⣄⠙⣿⣿⣿⡇⣿⡇⠀⣠⡾⠋\n"
+                     f"⠀⠀⠙⢷⣄⠀⠀⠀⠀⣿⣿⣿⠟⠀⠀⠻⣿⡇⡿⣡⡾⠋⠀⠀\n"
+                     f"⠀⠀⠀⠀⠙⢷⣄⠀⠀⢻⣿⣿⣄⠀⠀⠀⠀⣠⡾⠋⠀⠀⠀⠀\n"
+                     f"⠀⠀⠀⠀⠀⠀⠙⢷⣄⠀⣿⣿⣿⠆⠀⣠⡾⠋⠀⠀⠀⠀⠀⠀\n"
+                     f"⠀⠀⠀⠀⠀⠀⠀⠀⠙⢷⣝⠋⠀⣠⡾⠋⠀⠀⠀⠀⠀⠀⠀⠀\n"
+                     f"⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⢷⡾⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n"
+                     f"⠀⠀⠀⠀⡄⣤⠀⣄⣤⠀⣤⠀⣤⣀⠀⣠⠤⠀⣤⢄⠀⠀⠀⠀\n"
+                     f"⠀⠀⠀⠀⢇⡿⠀⡇⣿⠀⣿⠀⢿⡠⠀⣿⣉⠀⣿⡸⠀\n"
+                     f"`===============================`\n"
+                     f"**くりす まきせ** ❣️...\n"
+                     f"`===============================`"
+                     )
+>>>>>>> 3448c60... Update system_stats.py
 
 
 @register(outgoing=True, pattern="^.aliveu")
