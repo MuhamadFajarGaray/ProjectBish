@@ -95,9 +95,15 @@ async def carbon_api(e):
         }
     }
     driver.execute("send_command", params)
+<<<<<<< HEAD
     driver.find_element_by_xpath("//button[contains(text(),'Export')]").click()
    # driver.find_element_by_xpath("//button[contains(text(),'4x')]").click()
    # driver.find_element_by_xpath("//button[contains(text(),'PNG')]").click()
+=======
+    driver.find_element_by_xpath("//button[@id='export-menu']").click()
+    driver.find_element_by_xpath("//button[contains(text(),'4x')]").click()
+    driver.find_element_by_xpath("//button[contains(text(),'PNG')]").click()
+>>>>>>> b8f107f9b2fa7e98b42f0c7f5eb64a81303e4bf8
     await e.edit("`Processing..\n75%`")
     # Waiting for downloading
     while not os.path.isfile("/root/userbot/.bin/carbon.png"):
