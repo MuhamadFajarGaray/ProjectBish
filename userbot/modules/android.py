@@ -11,7 +11,6 @@ import os
 import time
 import math
 
-from datetime import datetime
 from requests import get
 from bs4 import BeautifulSoup
 
@@ -125,17 +124,6 @@ async def download_api(dl):
     if not re.findall(r'\bhttps?://download.*pixelexperience.*\.org\S+', URL):
         await dl.edit("`Invalid information...`")
         return
-    if URL.endswith('/'):
-        file_name = URL.split("/")[-2]
-    else:
-        file_name = URL.split("/")[-1]
-    build_date = datetime.strptime(file_name.split("-")[2], '%Y%m%d'
-                                   ).strftime('%Y/%m/%d')  # Full ROM
-    android_version = file_name.split("-")[1]
-    if android_version == "9.0":
-        await dl.edit("`Abort, only support android 10...`")
-        return
-    await dl.edit("`Sending information...`")
     driver = await chrome()
     await dl.edit("`Getting information...`")
     driver.get(URL)
@@ -144,45 +132,40 @@ async def download_api(dl):
         if error[0].text == "File Not Found.":
             await dl.edit(f"`FileNotFoundError`: {URL} is not found.")
             return
-    data = driver.find_elements_by_class_name("package__data")
-    """
-    - Parse index for download button so it will match with current build_date
-    """
-    if "-update-" in file_name:
-        """ - Incremental don't need build_date because index is known  - """
-        if '_Plus_' in file_name:
-            i = 5
-        else:
-            i = 2
-    else:
-        for index, value in enumerate(data):
-            for val in value.text.split('\n'):
-                if val == build_date:
-                    i = index
-                    break
-                else:
-                    i = None
-            if i is not None:
+    datas = driver.find_elements_by_class_name('download__meta')
+    """ - enumerate data to make sure we download the matched version - """
+    md5_origin = None
+    i = None
+    for index, value in enumerate(datas):
+        for data in value.text.split("\n"):
+            if data.startswith("MD5"):
+                md5_origin = data.split(':')[1].strip()
+                i = index
                 break
-        if '_Plus_' in file_name:
-            """
-            - Because of incremental package from non plus edition
-            """
-            i += 1
-    data = driver.find_elements_by_class_name('download__meta')
-    md5_origin = data[i].text.split('\n')[2].split(':')[1].strip()
+        if md5_origin is not None and i is not None:
+            break
+    if md5_origin is None and i is None:
+        await dl.edit("`There is no match version available...`")
+    if URL.endswith('/'):
+        file_name = URL.split("/")[-2]
+    else:
+        file_name = URL.split("/")[-1]
     file_path = TEMP_DOWNLOAD_DIRECTORY + file_name
     download = driver.find_elements_by_class_name("download__btn")[i]
     download.click()
-    x = download.get_attribute('text').split()[-2:]
-    file_size = human_to_bytes((x[0] + x[1]).strip('()'))
+    await dl.edit("`Starting download...`")
+    file_size = human_to_bytes(download.text.split(None, 3)[-1].strip('()'))
     display_message = None
     complete = False
     start = time.time()
     while complete is False:
         if os.path.isfile(file_path + '.crdownload'):
-            downloaded = os.stat(file_path + '.crdownload').st_size
-            status = "Downloading"
+            try:
+                downloaded = os.stat(file_path + '.crdownload').st_size
+                status = "Downloading"
+            except OSError:  # Rare case
+                await asyncio.sleep(1)
+                continue
         elif os.path.isfile(file_path):
             downloaded = os.stat(file_path).st_size
             file_size = downloaded
@@ -215,7 +198,8 @@ async def download_api(dl):
             display_message = current_message
         if downloaded == file_size:
             if not os.path.isfile(file_path):  # Rare case
-                await asyncio.sleep(3.5)
+                await asyncio.sleep(1)
+                continue
             MD5 = await md5(file_path)
             if md5_origin == MD5:
                 complete = True
