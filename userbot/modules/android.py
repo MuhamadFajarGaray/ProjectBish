@@ -5,12 +5,21 @@
 #
 """ Userbot module containing commands related to android"""
 
+import asyncio
 import re
+import os
+import time
+import math
+
+from datetime import datetime
 from requests import get
 from bs4 import BeautifulSoup
 
-from userbot import CMD_HELP
+from userbot import CMD_HELP, TEMP_DOWNLOAD_DIRECTORY
 from userbot.events import register
+from userbot.utils import (
+    chrome, humanbytes, time_formatter, md5, human_to_bytes
+)
 
 GITHUB = 'https://github.com'
 DEVICES_DATA = ('https://raw.githubusercontent.com/androidtrackers/'
@@ -101,6 +110,129 @@ async def codename_info(request):
     await request.edit(reply)
 
 
+@register(outgoing=True, pattern="^.pixeldl(?: |$)(.*)")
+async def download_api(dl):
+    await dl.edit("`Collecting information...`")
+    URL = dl.pattern_match.group(1)
+    URL_MSG = await dl.get_reply_message()
+    if URL:
+        pass
+    elif URL_MSG:
+        URL = URL_MSG.text
+    else:
+        await dl.edit("`Empty information...`")
+        return
+    if not re.findall(r'\bhttps?://download.*pixelexperience.*\.org\S+', URL):
+        await dl.edit("`Invalid information...`")
+        return
+    if URL.endswith('/'):
+        file_name = URL.split("/")[-2]
+    else:
+        file_name = URL.split("/")[-1]
+    build_date = datetime.strptime(file_name.split("-")[2], '%Y%m%d'
+                                   ).strftime('%Y/%m/%d')  # Full ROM
+    android_version = file_name.split("-")[1]
+    if android_version == "9.0":
+        await dl.edit("`Abort, only support android 10...`")
+        return
+    await dl.edit("`Sending information...`")
+    driver = await chrome()
+    await dl.edit("`Getting information...`")
+    driver.get(URL)
+    error = driver.find_elements_by_class_name("swal2-content")
+    if len(error) > 0:
+        if error[0].text == "File Not Found.":
+            await dl.edit(f"`FileNotFoundError`: {URL} is not found.")
+            return
+    data = driver.find_elements_by_class_name("package__data")
+    """
+    - Parse index for download button so it will match with current build_date
+    """
+    if "-update-" in file_name:
+        """ - Incremental don't need build_date because index is known  - """
+        if '_Plus_' in file_name:
+            i = 5
+        else:
+            i = 2
+    else:
+        for index, value in enumerate(data):
+            for val in value.text.split('\n'):
+                if val == build_date:
+                    i = index
+                    break
+                else:
+                    i = None
+            if i is not None:
+                break
+        if '_Plus_' in file_name:
+            """
+            - Because of incremental package from non plus edition
+            """
+            i += 1
+    data = driver.find_elements_by_class_name('download__meta')
+    md5_origin = data[i].text.split('\n')[2].split(':')[1].strip()
+    file_path = TEMP_DOWNLOAD_DIRECTORY + file_name
+    download = driver.find_elements_by_class_name("download__btn")[i]
+    download.click()
+    x = download.get_attribute('text').split()[-2:]
+    file_size = human_to_bytes((x[0] + x[1]).strip('()'))
+    display_message = None
+    complete = False
+    start = time.time()
+    while complete is False:
+        if os.path.isfile(file_path + '.crdownload'):
+            downloaded = os.stat(file_path + '.crdownload').st_size
+            status = "Downloading"
+        elif os.path.isfile(file_path):
+            downloaded = os.stat(file_path).st_size
+            file_size = downloaded
+            status = "Checking"
+        else:
+            await asyncio.sleep(0.3)
+            continue
+        diff = time.time() - start
+        percentage = downloaded / file_size * 100
+        speed = round(downloaded / diff, 2)
+        eta = round((file_size - downloaded) / speed)
+        prog_str = "`{0}` | [{1}{2}] `{3}%`".format(
+            status,
+            "".join(["●" for i in range(
+                    math.floor(percentage / 10))]),
+            "".join(["○"for i in range(
+                    10 - math.floor(percentage / 10))]),
+            round(percentage, 2))
+        current_message = (
+            "`[DOWNLOAD]`\n\n"
+            f"`{file_name}`\n"
+            f"`Status`\n{prog_str}\n"
+            f"`{humanbytes(downloaded)} of {humanbytes(file_size)}"
+            f" @ {humanbytes(speed)}`\n"
+            f"`ETA` -> {time_formatter(eta)}"
+        )
+        if round(diff % 10.00) == 0 and display_message != current_message or (
+          downloaded == file_size):
+            await dl.edit(current_message)
+            display_message = current_message
+        if downloaded == file_size:
+            if not os.path.isfile(file_path):  # Rare case
+                await asyncio.sleep(3.5)
+            MD5 = await md5(file_path)
+            if md5_origin == MD5:
+                complete = True
+            else:
+                await dl.edit("`Download corrupt...`")
+                os.remove(file_path)
+                driver.quit()
+                return
+    await dl.respond(
+        f"`{file_name}`\n\n"
+        f"Successfully downloaded to `{file_path}`."
+    )
+    await dl.delete()
+    driver.quit()
+    return
+
+
 @register(outgoing=True, pattern=r"^.specs(?: |)([\S]*)(?: |)([\s\S]*)")
 async def devices_specifications(request):
     """ Mobile devices specifications """
@@ -188,6 +320,8 @@ CMD_HELP.update({
     "\nUsage: Get info about android device codename or model."
     "\n\n>`.codename <brand> <device>`"
     "\nUsage: Search for android device codename."
+    "\n\n>`.pixeldl` **<download.pixelexperience.org>**"
+    "\nUsage: Download pixel experience ROM into your userbot server."
     "\n\n>`.specs <brand> <device>`"
     "\nUsage: Get device specifications info."
     "\n\n>`.twrp <codename>`"
