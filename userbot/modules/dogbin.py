@@ -1,13 +1,14 @@
 # Copyright (C) 2019 The Raphielscape Company LLC.
 #
-# Licensed under the Raphielscape Public License, Version 1.c (the "License");
+# Licensed under the Raphielscape Public License, Version 1.d (the "License");
 # you may not use this file except in compliance with the License.
 #
 """ Userbot module containing commands for interacting with dogbin(https://del.dog)"""
 
 from requests import get, post, exceptions
+import asyncio
 import os
-from userbot import BOTLOG, BOTLOG_CHATID, CMD_HELP, TEMP_DOWNLOAD_DIRECTORY
+from userbot import BOTLOG, BOTLOG_CHATID, CMD_HELP, LOGS, TEMP_DOWNLOAD_DIRECTORY
 from userbot.events import register
 
 DOGBIN_URL = "https://del.dog/"
@@ -21,7 +22,8 @@ async def paste(pstl):
     reply_id = pstl.reply_to_msg_id
 
     if not match and not reply_id:
-        return await pstl.edit("`Elon Musk said I cannot paste void.`")
+        await pstl.edit("`Elon Musk said I cannot paste void.`")
+        return
 
     if match:
         message = match
@@ -37,7 +39,7 @@ async def paste(pstl):
                 m_list = fd.readlines()
             message = ""
             for m in m_list:
-                message += m.decode("UTF-8") + "\r"
+                message += m.decode("UTF-8")
             os.remove(downloaded_file_name)
         else:
             message = message.message
@@ -66,7 +68,7 @@ async def paste(pstl):
     if BOTLOG:
         await pstl.client.send_message(
             BOTLOG_CHATID,
-            "Paste query was executed successfully",
+            f"Paste query was executed successfully",
         )
 
 
@@ -90,7 +92,8 @@ async def get_dogbin_content(dog_url):
     elif message.startswith("del.dog/"):
         message = message[len("del.dog/"):]
     else:
-        return await dog_url.edit("`Is that even a dogbin url?`")
+        await dog_url.edit("`Is that even a dogbin url?`")
+        return
 
     resp = get(f'{DOGBIN_URL}raw/{message}')
 
@@ -109,8 +112,7 @@ async def get_dogbin_content(dog_url):
             str(RedirectsErr))
         return
 
-    reply_text = ("`Fetched dogbin URL content successfully!`"
-                  "\n\n`Content:` " + resp.text)
+    reply_text = "`Fetched dogbin URL content successfully!`\n\n`Content:` " + resp.text
 
     await dog_url.edit(reply_text)
     if BOTLOG:
@@ -122,8 +124,8 @@ async def get_dogbin_content(dog_url):
 
 CMD_HELP.update({
     "dogbin":
-    ">`.paste <text/reply>`"
-    "\nUsage: Create a paste or a shortened url using dogbin (https://del.dog/)"
-    "\n\n>`.getpaste`"
-    "\nUsage: Gets the content of a paste or shortened url from dogbin (https://del.dog/)"
+    ".paste <text/reply>\
+\nUsage: Create a paste or a shortened url using dogbin (https://del.dog/)\
+\n\n.getpaste\
+\nUsage: Gets the content of a paste or shortened url from dogbin (https://del.dog/)"
 })
