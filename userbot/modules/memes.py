@@ -631,23 +631,6 @@ HIT = [
 
 WHERE = ["in the chest", "on the head", "on the butt", "on the crotch"]
 
-GAMBAR_TITIT = """
-🍆🍆
-🍆🍆🍆
-  🍆🍆🍆
-    🍆🍆🍆
-     🍆🍆🍆
-       🍆🍆🍆
-        🍆🍆🍆
-         🍆🍆🍆
-          🍆🍆🍆
-          🍆🍆🍆
-      🍆🍆🍆🍆
- 🍆🍆🍆🍆🍆🍆
- 🍆🍆🍆  🍆🍆🍆
-    🍆🍆       🍆🍆
-"""
-
 # ===========================================
 
 
@@ -807,8 +790,7 @@ async def copypasta(cp_e):
     elif textx:
         message = textx.text
     else:
-        await cp_e.edit("`😂🅱️IvE👐sOME👅text👅for✌️Me👌tO👐MAkE👀iT💞funNy!💦`")
-        return
+        return await cp_e.edit("`😂🅱️IvE👐sOME👅text👅for✌️Me👌tO👐MAkE👀iT💞funNy!💦`")
 
     reply_text = choice(EMOJIS)
     # choose a random character in the message to be substituted with 🅱️
@@ -841,8 +823,7 @@ async def vapor(vpr):
     elif textx:
         message = textx.text
     else:
-        await vpr.edit("`Ｇｉｖｅ ｓｏｍｅ ｔｅｘｔ ｆｏｒ ｖａｐｏｒ！`")
-        return
+        return await vpr.edit("`Ｇｉｖｅ ｓｏｍｅ ｔｅｘｔ ｆｏｒ ｖａｐｏｒ！`")
 
     for charac in message:
         if 0x21 <= ord(charac) <= 0x7F:
@@ -866,8 +847,7 @@ async def stretch(stret):
     elif textx:
         message = textx.text
     else:
-        await stret.edit("`GiiiiiiiB sooooooomeeeeeee teeeeeeext!`")
-        return
+        return await stret.edit("`GiiiiiiiB sooooooomeeeeeee teeeeeeext!`")
 
     count = randint(3, 10)
     reply_text = sub(r"([aeiouAEIOUａｅｉｏｕＡＥＩＯＵаеиоуюяыэё])", (r"\1" * count),
@@ -886,10 +866,9 @@ async def zal(zgfy):
     elif textx:
         message = textx.text
     else:
-        await zgfy.edit(
+        return await zgfy.edit(
             "`gͫ ̆ i̛ ̺ v͇̆ ȅͅ   a̢ͦ   s̴̪ c̸̢ ä̸ rͩͣ y͖͞   t̨͚ é̠ x̢͖  t͔͛`"
         )
-        return
 
     for charac in message:
         if not charac.isalpha():
@@ -897,12 +876,12 @@ async def zal(zgfy):
             continue
 
         for _ in range(0, 3):
-            textz = randint(0, 2)
+            rand = randint(0, 2)
 
-            if textz == 0:
+            if rand == 0:
                 charac = charac.strip() + \
                     choice(ZALG_LIST[0]).strip()
-            elif textz == 1:
+            elif rand == 1:
                 charac = charac.strip() + \
                     choice(ZALG_LIST[1]).strip()
             else:
@@ -930,8 +909,7 @@ async def faces(owo):
     elif textx:
         message = textx.text
     else:
-        await owo.edit("` UwU no text given! `")
-        return
+        return await owo.edit("` UwU no text given! `")
 
     reply_text = sub(r"(r|l)", "w", message)
     reply_text = sub(r"(R|L)", "W", reply_text)
@@ -947,26 +925,6 @@ async def faces(owo):
 async def react_meme(react):
     """ Make your userbot react to everything. """
     await react.edit(choice(FACEREACTS))
-
-
-@register(outgoing=True, pattern="^.iwi(?: |$)(.*)")
-async def faces(siwis):
-    """ IwI """
-    textx = await siwis.get_reply_message()
-    message = siwis.pattern_match.group(1)
-    if message:
-        pass
-    elif textx:
-        message = textx.text
-    else:
-        await siwis.edit("` IwI no text given! `")
-        return
-
-    reply_text = sub(r"(a|i|u|e|o)", "i", message)
-    reply_text = sub(r"(A|I|U|E|O)", "I", reply_text)
-    reply_text = sub(r"\!+", " " + choice(IWIS), reply_text)
-    reply_text += " " + choice(IWIS)
-    await siwis.edit(reply_text)
 
 
 @register(outgoing=True, pattern="^.shg$")
@@ -993,11 +951,27 @@ async def metoo(hahayes):
     await hahayes.edit(choice(METOOSTR))
 
 
-@register(outgoing=True, pattern="^Oof$")
+@register(outgoing=True, pattern="^.Oof$")
 async def Oof(e):
     t = "Oof"
-    for j in range(15):
+    for j in range(16):
         t = t[:-1] + "of"
+        await e.edit(t)
+
+
+@register(outgoing=True, pattern="^.oem$")
+async def oem(e):
+    t = "Oem"
+    for j in range(16):
+        t = t[:-1] + "em"
+        await e.edit(t)
+
+
+@register(outgoing=True, pattern="^.Oem$")
+async def Oem(e):
+    t = "Oem"
+    for j in range(16):
+        t = t[:-1] + "em"
         await e.edit(t)
 
 
@@ -1005,16 +979,6 @@ async def Oof(e):
 async def iqless(e):
     await e.edit("♿")
 
-                      
-@register(outgoing=True, pattern="^.fuck$")
-async def iqless(e):
-    await e.edit("🖕🖕🖕🖕🖕🖕🖕🖕\n🖕🖕🖕🖕🖕🖕🖕🖕\n🖕🖕\n🖕🖕\n🖕🖕\n🖕🖕🖕🖕🖕🖕\n🖕🖕🖕🖕🖕🖕\n🖕🖕\n🖕🖕\n🖕🖕\n🖕🖕\n🖕🖕")  
-
-                     
-@register(outgoing=True, pattern="^.bye$")
-async def iqless(e):
-    await e.edit("Kek thx bye")       
-                      
 
 @register(outgoing=True, pattern="^.moon$")
 async def moon(event):
@@ -1027,19 +991,7 @@ async def moon(event):
     except BaseException:
         return
 
-                   
-@register(outgoing=True, pattern="^.earth$")
-async def earth(event):
-    deq = deque(list("🌏🌍🌎🌎🌍🌏🌍🌎"))
-    try:
-        for x in range(32):
-            await sleep(0.1)
-            await event.edit("".join(deq))
-            deq.rotate(1)
-    except BaseException:
-        return                              
 
-                      
 @register(outgoing=True, pattern="^.clock$")
 async def clock(event):
     deq = deque(list("🕙🕘🕗🕖🕕🕔🕓🕒🕑🕐🕛"))
@@ -1051,31 +1003,7 @@ async def clock(event):
     except BaseException:
         return
 
-                      
-@register(outgoing=True, pattern="^.rain$")
-async def rain(event):
-    deq = deque(list("☀️🌤⛅️🌥☁️🌧⛈"))
-    try:
-        for x in range(32):
-            await sleep(0.1)
-            await event.edit("".join(deq))
-            deq.rotate(1)
-    except BaseException:
-        return
 
-                      
-@register(outgoing=True, pattern="^.love$")
-async def love(event):
-    deq = deque(list("❤️🧡💛💚💙💜🖤💕💞💓💗💖💘💝"))
-    try:
-        for x in range(32):
-            await sleep(0.1)
-            await event.edit("".join(deq))
-            deq.rotate(1)
-    except BaseException:
-        return
-              
-                      
 @register(outgoing=True, pattern="^.mock(?: |$)(.*)")
 async def spongemocktext(mock):
     """ Do it and find the real fun. """
@@ -1087,8 +1015,7 @@ async def spongemocktext(mock):
     elif textx:
         message = textx.text
     else:
-        await mock.edit("`gIvE sOMEtHInG tO MoCk!`")
-        return
+        return await mock.edit("`gIvE sOMEtHInG tO MoCk!`")
 
     for charac in message:
         if charac.isalpha() and randint(0, 1):
@@ -1110,8 +1037,7 @@ async def claptext(memereview):
     elif textx:
         message = textx.text
     else:
-        await memereview.edit("`Hah, I don't clap pointlessly!`")
-        return
+        return await memereview.edit("`Hah, I don't clap pointlessly!`")
     reply_text = "👏 "
     reply_text += message.replace(" ", " 👏 ")
     reply_text += " 👏"
@@ -1150,10 +1076,24 @@ async def let_me_google_that_for_you(lmgtfy_q):
     lfy_url = f"http://lmgtfy.com/?s=g&iie=1&q={query_encoded}"
     payload = {'format': 'json', 'url': lfy_url}
     r = requests.get('http://is.gd/create.php', params=payload)
-    await lmgtfy_q.edit(f"Here you are, help yourself.\
-    \n[{query}]({r.json()['shorturl']})")
+    await lmgtfy_q.edit("Here you are, help yourself."
+                        f"\n[{query}]({r.json()['shorturl']})")
 
 
+@register(outgoing=True, pattern="^.sayhi$")
+async def sayhi(e):
+    await e.edit(
+        "\n💰💰💰💰💰💰💰💰💰💰💰💰"
+        "\n💰🔷💰💰💰🔷💰💰🔷🔷🔷💰"
+        "\n💰🔷💰💰💰🔷💰💰💰🔷💰💰"
+        "\n💰🔷💰💰💰🔷💰💰💰🔷💰💰"
+        "\n💰🔷🔷🔷🔷🔷💰💰💰🔷💰💰"
+        "\n💰🔷💰💰💰🔷💰💰💰🔷💰💰"
+        "\n💰🔷💰💰💰🔷💰💰💰🔷💰💰"
+        "\n💰🔷💰💰💰🔷💰💰🔷🔷🔷💰"
+        "\n💰💰💰💰💰💰💰💰💰💰💰💰")
+        
+        
 @register(pattern=r".scam(?: |$)(.*)", outgoing=True)
 async def scam(event):
     """ Just a small command to fake chat actions for fun !! """
@@ -1198,8 +1138,7 @@ async def typewriter(typew):
     elif textx:
         message = textx.text
     else:
-        await typew.edit("`Give a text to type!`")
-        return
+        return await typew.edit("`Give a text to type!`")
     sleep_time = 0.03
     typing_symbol = "|"
     old_text = ""
@@ -1212,7 +1151,6 @@ async def typewriter(typew):
         await sleep(sleep_time)
         await typew.edit(old_text)
         await sleep(sleep_time)
-
 
 @register(outgoing=True, pattern="^.leave$")
 async def leave(e):
@@ -1279,12 +1217,12 @@ async def gtfo(e):
 async def nih(e):
     if not e.text[0].isalpha() and e.text[0] not in ("/", "#", "@", "!"):
         await e.edit("`\n(\_/)`"
-                     "`\n(•_•)`"
-                     "`\n >🌹 *ini buat kamu`"
+                     "`\n(●_●)`"
+                     "`\n />🌹 *ini buat kamu`"
                      "`\n                    `"
                      "`\n(\_/)`"
-                     "`\n(•_•)`"
-                     "`\n🌹<\ *tapi boong`")
+                     "`\n(●_●)`"
+                     "`\n🌹<\  *tapi boong`")
 
 
 @register(outgoing=True, pattern="^.fag$")  
@@ -1358,88 +1296,104 @@ async def nou(e):
         await e.edit("`\n┈╭╮╭╮\n┈┃┃┃┃\n╭┻┗┻┗╮`"
                      "`\n┃┈▋┈▋┃\n┃┈╭▋━╮━╮\n┃┈┈╭╰╯╰╯╮`"
                      "`\n┫┈┈  NoU\n┃┈╰╰━━━━╯`"
-                     "`\n┗━━┻━┛`")
+"`\n┗━━┻━┛`")                   
 
 
-@register(outgoing=True, pattern=r"^\.(?:penis|dick)\s?(.)?")
-async def emoji_penis(e):
-    emoji = e.pattern_match.group(1)
-    titid = GAMBAR_TITIT
-    if emoji:
-        titid = titid.replace('🍆', emoji)
-    await e.edit(titid)  
-              
- 
+@register(outgoing=True, pattern="^.iwi(?: |$)(.*)")
+async def faces(siwis):
+    """ IwI """
+    textx = await siwis.get_reply_message()
+    message = siwis.pattern_match.group(1)
+    if message:
+        pass
+    elif textx:
+        message = textx.text
+    else:
+        await siwis.edit("` IwI no text given! `")
+        return
+
+    reply_text = sub(r"(a|i|u|e|o)", "i", message)
+    reply_text = sub(r"(A|I|U|E|O)", "I", reply_text)
+    reply_text = sub(r"\!+", " " + choice(IWIS), reply_text)
+    reply_text += " " + choice(IWIS)
+    await siwis.edit(reply_text)
+
+
+@register(outgoing=True, pattern="^.shg$")
+async def shrugger(shg):
+    r""" ¯\_(ツ)_/¯ """
+    await shg.edit(choice(SHGS))
+
 CMD_HELP.update({
     "memes":
-    ".cowsay\
-\nUsage: cow which says things.\
-\n\n:/\
-\nUsage: Check yourself ;)\
-\n\n-_-\
-\nUsage: Ok...\
-\n\n;_;\
-\nUsage: Like `-_-` but crying.\
-\n\n.cp\
-\nUsage: Copypasta the famous meme\
-\n\n.vapor\
-\nUsage: Vaporize everything!\
-\n\n.str\
-\nUsage: Stretch it.\
-\n\n.10iq\
-\nUsage: You retard !!\
-\n\n.zal\
-\nUsage: Invoke the feeling of chaos.\
-\n\nOof\
-\nUsage: Ooooof\
-\n\n.fp\
-\nUsage: Facepalm :P\
-\n\n.moon\
-\nUsage: kensar moon animation.\
-\n\n.clock\
-\nUsage: kensar clock animation.\
-\n\n.hi\
-\nUsage: Greet everyone!\
-\n\n.coinflip <heads/tails>\
-\nUsage: Flip a coin !!\
-\n\n.owo\
-\nUsage: UwU\
-\n\n.react\
-\nUsage: Make your userbot react to everything.\
-\n\n.slap\
-\nUsage: reply to slap them with random objects !!\
-\n\n.cry\
-\nUsage: y u du dis, i cri.\
-\n\n.shg\
-\nUsage: Shrug at it !!\
-\n\n.run\
-\nUsage: Let Me Run, run, RUNNN!\
-\n\n.chase\
-\nUsage: You better start running\
-\n\n.metoo\
-\nUsage: Haha yes\
-\n\n.mock\
-\nUsage: Do it and find the real fun.\
-\n\n.clap\
-\nUsage: Praise people!\
-\n\n.f <emoji/character>\
-\nUsage: Pay Respects.\
-\n\n.bt\
-\nUsage: Believe me, you will find this useful.\
-\n\n.type\
-\nUsage: Just a small command to make your keyboard become a typewriter!\
-\n\n.penis <emoji> | .dick <emoji>\
-\nUsage: Creates a penis using the provided emoji, or 🍆 if no emoji is provided.\
-\n\n.lfy <query>\
-\nUsage: Let me Google that for you real quick !!\
-\n\n.decide [Alternates: (.yes, .no, .maybe)]\
-\nUsage: Make a quick decision.\
-\n\n.scam <action> <time>\
-\n[Available Actions: (typing, contact, game, location, voice, round, video, photo, document, cancel)]\
-\nUsage: Create fake chat actions, for fun. (Default action: typing)\
-\n\nAnd many more\
-\n.nou ; .bot ; .gey ; .gey ; .tf ; .paw ; .taco ; .nih ;\
-\n.fag ; .gtfo ; .stfu ; .lol ; .lool ; .fail ; .leave\
-\n.love ; .rain ; .earth ; .fuck ; .iwi\
-\n\n\nThanks to 🅱️ottom🅱️ext🅱️ot (@NotAMemeBot) for some of these."
+    ">`.cowsay`"
+    "\nUsage: cow which says things."
+    "\n\n>`:/`"
+    "\nUsage: Check yourself ;)"
+    "\n\n>`-_-`"
+    "\nUsage: Ok..."
+    "\n\n>`;_;`"
+    "\nUsage: Like `-_-` but crying."
+    "\n\n>`.cp`"
+    "\nUsage: Copypasta the famous meme"
+    "\n\n>`.vapor`"
+    "\nUsage: Vaporize everything!"
+    "\n\n>`.str`"
+    "\nUsage: Stretch it."
+    "\n\n>`.10iq`"
+    "\nUsage: You retard !!"
+    "\n\n>`.zal`"
+    "\nUsage: Invoke the feeling of chaos."
+    "\n\n>`Oem`"
+    "\nUsage: Oeeeem"
+    "\n\n>`Oof`"
+    "\nUsage: Ooooof"
+    "\n\n>`.fp`"
+    "\nUsage: Facepalm :P"
+    "\n\n>`.moon`"
+    "\nUsage: kensar moon animation."
+    "\n\n>`.clock`"
+    "\nUsage: kensar clock animation."
+    "\n\n>`.hi`"
+    "\nUsage: Greet everyone!"
+    "\n\n>`.coinflip <heads/tails>`"
+    "\nUsage: Flip a coin !!"
+    "\n\n>`.owo`"
+    "\nUsage: UwU"
+    "\n\n>`.react`"
+    "\nUsage: Make your userbot react to everything."
+    "\n\n>`.slap`"
+    "\nUsage: reply to slap them with random objects !!"
+    "\n\n>`.cry`"
+    "\nUsage: y u du dis, i cri."
+    "\n\n>`.shg`"
+    "\nUsage: Shrug at it !!"
+    "\n\n>`.run`"
+    "\nUsage: Let Me Run, run, RUNNN!"
+    "\n\n>`.chase`"
+    "\nUsage: You better start running"
+    "\n\n>`.metoo`"
+    "\nUsage: Haha yes"
+    "\n\n>`.mock`"
+    "\nUsage: Do it and find the real fun."
+    "\n\n>`.clap`"
+    "\nUsage: Praise people!"
+    "\n\n>`.f <emoji/character>`"
+    "\nUsage: Pay Respects."
+    "\n\n>`.bt`"
+    "\nUsage: Believe me, you will find this useful."
+    "\n\n>`.type`"
+    "\nUsage: Just a small command to make your keyboard become a typewriter!"
+    "\n\n>`.lfy <query>`"
+    "\nUsage: Let me Google that for you real quick !!"
+    "\n\n>`.decide [Alternates: (.yes, .no, .maybe)]`"
+    "\nUsage: Make a quick decision."
+    "\n\n>`.scam <action> <time>`"
+    "\n[Available Actions: (typing, contact, game, location, voice, round, video, photo, document, cancel)]"
+    "\nUsage: Create fake chat actions, for fun. (Default action: typing)"
+    "\n\nAnd many more"
+    "`\n>.nou ; .bot ; .gey ; .gey ; .tf ; .paw ; .taco ; .nih ;`"
+    "`\n>.fag ; .gtfo ; .stfu ; .lol ; .lool ; .fail ; .leave`"
+    "`\n>.iwi ; .sayhi`"
+    "\n\n\nThanks to 🅱️ottom🅱️ext🅱️ot (@NotAMemeBot) for some of these."
 })
